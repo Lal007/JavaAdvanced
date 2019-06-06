@@ -6,18 +6,18 @@ import main.Lesson_1.Obstacles.Obstacle;
 import java.util.ArrayList;
 import java.util.Arrays;
 
- class Course {
+ public class Course {
 
     private ArrayList<Obstacle> obstacleCourse;
 
 
-    Course(Obstacle... obstacles) {
+   public Course(Obstacle... obstacles) {
         obstacleCourse = new ArrayList<>(Arrays.asList(obstacles));
     }
 
-    void doIt(Team team){
-        for (Competitor c:team.getCompetitorsList()) {
-            for (Obstacle o:obstacleCourse) {
+    public void doIt(Team team){
+        for (Competitor c : team.getCompetitorsList()) {
+            for (Obstacle o : obstacleCourse) {
                 o.doIt(c);
             }
         }

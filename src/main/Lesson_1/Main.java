@@ -16,19 +16,5 @@ public class Main {
         c.doIt(team);
         team.teamInfo();
         team.showResults();
-
-
-
-        /*Competitor[] competitorsList = {new Human("Боб"), new Cat("Барсик"), new Dog("Бобик")};
-        Obstacle[] course = {new Cross(80), new Wall(2), new Wall(1), new Cross(120)};
-        for (Competitor c : competitorsList) {
-            for (Obstacle o : course) {
-                o.doIt(c);
-                if (!c.isOnDistance()) break;
-            }
-        }
-        for (Competitor c : competitorsList) {
-            c.info();
-        }*/
     }
 }
