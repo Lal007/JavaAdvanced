@@ -1,13 +1,13 @@
-package main.Lesson_1.Marafon;
+package main.Lesson_1.Competitors;
 
 public class Human implements Competitor {
-    String name;
+    private String name;
 
-    int maxRunDistance;
-    int maxJumpHeight;
-    int maxSwimDistance;
+    private int maxRunDistance;
+    private int maxJumpHeight;
+    private int maxSwimDistance;
 
-    boolean active;
+    private boolean active;
 
     @Override
     public boolean isOnDistance() {
@@ -54,6 +54,6 @@ public class Human implements Competitor {
 
     @Override
     public void info() {
-        System.out.println(name + " - " + active);
+        System.out.println(name);
     }
 }
