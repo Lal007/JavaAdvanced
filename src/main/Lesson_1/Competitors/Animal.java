@@ -1,21 +1,23 @@
-package main.Lesson_1.Marafon;
 
-public class Animal implements Competitor {
-    String type;
-    String name;
+package main.Lesson_1.Competitors;
 
-    int maxRunDistance;
-    int maxJumpHeight;
-    int maxSwimDistance;
 
-    boolean onDistance;
+public abstract class Animal implements Competitor {
+    private String type;
+    private String name;
+
+    private int maxRunDistance;
+    private int maxJumpHeight;
+    private int maxSwimDistance;
+
+    private boolean onDistance;
 
     @Override
     public boolean isOnDistance() {
         return onDistance;
     }
 
-    public Animal(String type, String name, int maxRunDistance, int maxJumpHeight, int maxSwimDistance) {
+    Animal(String type, String name, int maxRunDistance, int maxJumpHeight, int maxSwimDistance) {
         this.type = type;
         this.name = name;
         this.maxRunDistance = maxRunDistance;
@@ -61,6 +63,6 @@ public class Animal implements Competitor {
 
     @Override
     public void info() {
-        System.out.println(type + " " + name + " - " + onDistance);
+        System.out.println(type + " " + name);
     }
 }

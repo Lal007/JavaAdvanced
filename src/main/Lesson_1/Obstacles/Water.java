@@ -1,4 +1,5 @@
-package main.Lesson_1.Marafon;
+package main.Lesson_1.Obstacles;
+import main.Lesson_1.Competitors.Competitor;
 
 public class Water extends Obstacle {
     int length;
