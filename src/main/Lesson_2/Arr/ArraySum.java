@@ -6,8 +6,8 @@ public class ArraySum {
     public static void main(String[] args) {
 
         //String[][] arr = {{"1", "2", "3", "4"}, {"5", "6", "7", "8"}, {"9", "10", "11", "12"}, {"13", "14", "15", "16"}};
-        //String[][] arr = {{"1", "2", "3", "4"}, {"5", "6", "7", "8"}, {"9", "10", "11", "12"}};
-        String[][] arr = {{"1", "2", "3", "4"}, {"5", "6", "7", "*"}, {"9", "10", "11", "12"}, {"13", "14", "15", "16"}};
+        String[][] arr = {{"1", "2", "3"}, {"5", "6", "7", "8"}, {"9", "10", "11", "12"}};
+        //String[][] arr = {{"1", "2", "3", "4"}, {"5", "6", "7", "*"}, {"9", "10", "11", "12"}, {"13", "14", "15", "16"}};
         try {
             new ArraySum().arraySum(arr);
         } catch (MyArraySizeException | MyArrayDataException e) {
@@ -17,8 +17,10 @@ public class ArraySum {
 
     public void arraySum(String[][] arr) throws MyArraySizeException, MyArrayDataException {
         int x = arr.length;
-        int y = arr[0].length;
-        if (!(x == 4 && y == 4)) throw new MyArraySizeException(x, y);
+        //if (!(x == 4 && y == 4)) throw new MyArraySizeException(x, y);
+        for (int i = 0; i < arr.length; i++){
+            if (!(x == 4 && arr[i].length == 4)) throw new MyArraySizeException(x, i);
+        }
         int sum = 0;
 
         for (int i = 0; i < arr.length; i++) {
