@@ -1,4 +1,4 @@
-package main;
+package test.Lesson_2;
 
 import main.Lesson_2.Arr.ArraySum;
 import main.Lesson_2.Arr.MyArrayDataException;
