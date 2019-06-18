@@ -8,6 +8,8 @@ public class ThreadTest {
     static final int ARR_SIZE = 10000000;
     static final int THREAD_ARR_SIZE = ARR_SIZE / COUNT_THREAD;
 
+    public static float[] single;
+    public static float[] multi;
 
     public static void main(String[] args) {
         calculationOne();
@@ -34,6 +36,7 @@ public class ThreadTest {
 
         //System.out.println(Arrays.toString(arr));
         System.out.println("Первый метод завершил выполнение за: " + (b - a)/1000.0 + " сек");
+        single = arr;
     }
 
     public static void calculationTwo(){
@@ -77,7 +80,7 @@ public class ThreadTest {
 
         long b = System.currentTimeMillis();
         System.out.println("Второй метод завершил выполнение за: " + (b - a)/1000.0 + " сек");
-
+        multi = arr;
     }
 
 
