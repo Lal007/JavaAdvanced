@@ -7,7 +7,7 @@
 <?scenbulder-stylsheet /css/Style.css?>
 
 <?import java.net.URL?>
-<VBox fx:controller="main.Lesson_4.sample.Controller" xmlns:fx="http://javafx.com/fxml" alignment="center">
+<VBox fx:controller="main.Lesson_4.sample1.Controller1" xmlns:fx="http://javafx.com/fxml" alignment="center">
 
     <stylesheets><URL value="@../css/Style.css"></URL> </stylesheets>
 

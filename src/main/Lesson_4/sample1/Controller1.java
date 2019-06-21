@@ -1,10 +1,10 @@
-package main.Lesson_4.sample;
+package main.Lesson_4.sample1;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
-public class Controller {
+public class Controller1 {
     @FXML
     TextArea textArea;
 
