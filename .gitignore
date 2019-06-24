@@ -28,7 +28,6 @@ hs_err_pid*
 .idea/vcs.xml
 .idea/workspace.xml
 Java_advanced.iml
-pom.xml
 target/classes/META-INF/Java_advanced.kotlin_module
 target/classes/META-INF/geekbrains.kotlin_module
 target/classes/main/Lesson_4/sample/sample.fxml
