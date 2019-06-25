@@ -1,4 +1,4 @@
-package main.Lesson_6.server;
+package main.Lesson_7.server;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -10,9 +10,9 @@ public class ClientHandler {
     private Socket socket;
     private DataInputStream in;
     private DataOutputStream out;
-    private Main server;
+    private MainServer server;
 
-    public ClientHandler(Socket socket, Main server) {
+    public ClientHandler(Socket socket, MainServer server) {
         try {
             this.socket = socket;
             this.server = server;
