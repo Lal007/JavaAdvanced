@@ -21,7 +21,7 @@ public class Main {
             while (true){
                 socket = server.accept();
                 System.out.println("Клиент подключен");
-                clients.add(new ClientHandler(socket, this));
+                new ClientHandler(socket, this);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -40,14 +40,20 @@ public class Main {
 
     }
 
-    public void broadCastMsg(String msg){
-        /*for (ClientHandler client:clients) {
-            if (!client.isClientClosed()){
-                client.sendMsg(msg);
-            }else clients.remove(client);
-        }*/
+    public void subscribe(ClientHandler client){
+        clients.add(client);
+    }
 
-        Iterator<ClientHandler> i = clients.iterator();
+    public void unsubscribe(ClientHandler client){
+        clients.remove(client);
+    }
+
+    public void broadCastMsg(String msg){
+        for (ClientHandler client:clients) {
+            client.sendMsg(msg);
+        }
+
+        /*Iterator<ClientHandler> i = clients.iterator();
 
         while (i.hasNext()) {
             ClientHandler client = i.next();
@@ -58,6 +64,6 @@ public class Main {
                 System.out.println("Клиент отключился");
 
             }
-        }
+        }*/
     }
 }

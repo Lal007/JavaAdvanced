@@ -23,6 +23,7 @@ public class ClientHandler {
                 @Override
                 public void run() {
                     try {
+                        server.subscribe(ClientHandler.this);
                         while (true) {
                             String str = in.readUTF();
                             if (str.equals("/end")) {
@@ -33,9 +34,12 @@ public class ClientHandler {
                     } catch (IOException e) {
                         try {
                             socket.close();
+                            server.unsubscribe(ClientHandler.this);
                         } catch (IOException ex) {
                             ex.printStackTrace();
                         }
+                    } finally {
+                        server.unsubscribe(ClientHandler.this);
                     }
 
                 }
