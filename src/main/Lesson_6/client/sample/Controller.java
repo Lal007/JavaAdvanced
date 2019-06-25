@@ -1,5 +1,6 @@
 package main.Lesson_6.client.sample;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
@@ -7,6 +8,7 @@ import javafx.scene.control.TextField;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.EOFException;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.URL;
@@ -42,8 +44,18 @@ public class Controller implements Initializable {
                             String str = in.readUTF();
                             textArea.appendText(str + "\n");
                         }
+                    } catch (EOFException e) {
+                        try {
+                            in.close();
+                            out.close();
+                            socket.close();
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        }
                     } catch (IOException e) {
                         try {
+                            in.close();
+                            out.close();
                             socket.close();
                         } catch (IOException ex) {
                             ex.printStackTrace();
@@ -51,6 +63,8 @@ public class Controller implements Initializable {
                         e.printStackTrace();
                     } finally {
                         try {
+                            in.close();
+                            out.close();
                             socket.close();
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -76,7 +90,15 @@ public class Controller implements Initializable {
 
     }
 
-
+    @FXML
+    public void exitApplication() {
+        System.out.println("Exit!!!");
+        try {
+            out.writeUTF("/end");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 
 }

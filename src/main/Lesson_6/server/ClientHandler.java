@@ -39,7 +39,13 @@ public class ClientHandler {
                             ex.printStackTrace();
                         }
                     } finally {
-                        server.unsubscribe(ClientHandler.this);
+                        try {
+                            socket.close();
+                            server.unsubscribe(ClientHandler.this);
+                            System.out.println("Отключение клиента");
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        }
                     }
 
                 }
