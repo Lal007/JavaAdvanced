@@ -4,17 +4,19 @@ package main.Lesson_7.server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.SQLException;
 import java.util.Vector;
 
 public class MainServer {
     private Vector<ClientHandler> clients;
 
-    public MainServer() {
+    public MainServer() throws SQLException {
         clients = new Vector<>();
         ServerSocket server = null;
         Socket socket = null;
 
         try {
+            AuthService.connect();
             server = new ServerSocket(8189);
             System.out.println("Сервер запущен");
 
@@ -36,6 +38,7 @@ public class MainServer {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            AuthService.disconnect();
         }
 
     }
@@ -65,5 +68,22 @@ public class MainServer {
 
             }
         }*/
+    }
+
+    public void broadCastMsg(String msg, String nickTo, String nickFrom){
+        for (ClientHandler client:clients) {
+            if (client.getNick().equals(nickTo)){
+                client.sendMsg(nickFrom + " - private message: " + msg);
+            }else if (client.getNick().equals(nickFrom)){
+                client.sendMsg("private message to " + nickTo + ": " +  msg);
+            }
+        }
+    }
+
+    public boolean isNickExist(String nick){
+        for (ClientHandler client:clients) {
+            if (client.getNick().equals(nick)) return true;
+        }
+        return false;
     }
 }

@@ -12,6 +12,7 @@ import java.io.DataOutputStream;
 import java.io.EOFException;
 import java.io.IOException;
 import java.net.Socket;
+import java.net.SocketException;
 
 public class Controller{
     @FXML
@@ -39,7 +40,7 @@ public class Controller{
     @FXML
     PasswordField passwordField;
 
-    private boolean isAuthorized;
+    private boolean isAuthorized = false;
 
     final String IP_ADRESS = "localhost";
     final int PORT = 8189;
@@ -87,7 +88,7 @@ public class Controller{
                             }
                             textArea.appendText(str + "\n");
                         }
-                    } catch (EOFException e) {
+                    } catch (EOFException  | SocketException e) {
                         try {
                             in.close();
                             out.close();
@@ -112,6 +113,7 @@ public class Controller{
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
+                        setAuthorized(false);
                     }
 
                 }
