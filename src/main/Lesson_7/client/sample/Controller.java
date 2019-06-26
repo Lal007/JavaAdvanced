@@ -11,6 +11,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.EOFException;
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.Socket;
 import java.net.SocketException;
 
@@ -140,8 +141,16 @@ public class Controller{
         System.out.println("Exit!!!");
         try {
             out.writeUTF("/end");
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException | NullPointerException e) {
+            System.out.println("Нет связи с сервером.");
+            try {
+                in.close();
+                out.close();
+                socket.close();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+
         }
     }
 
@@ -153,8 +162,15 @@ public class Controller{
             out.writeUTF("/auth " + loginField.getText() + " " + passwordField.getText());
             loginField.clear();
             passwordField.clear();
-        } catch (IOException e) {
-            e.printStackTrace();
+        }catch (IOException | NullPointerException e) {
+            System.out.println("Сервер недоступен");
+            try {
+                in.close();
+                out.close();
+                socket.close();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 

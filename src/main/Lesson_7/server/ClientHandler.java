@@ -51,7 +51,8 @@ public class ClientHandler {
                                 break;
                             }
                             else if (str.startsWith("/w")){
-                                String[] tokens = str.split(" ");
+                                String[] tokens = str.split(" ", 3);
+                                if (tokens.length != 3) continue;
                                 server.broadCastMsg(tokens[2], tokens[1], nick);
                             }else {
                                 server.broadCastMsg(nick + ": " + str);
