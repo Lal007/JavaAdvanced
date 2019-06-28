@@ -8,7 +8,7 @@
 
 <?import java.net.URL?>
 <?import javafx.scene.control.PasswordField?>
-<VBox fx:controller="main.Lesson_7.client.sample.Controller" xmlns:fx="http://javafx.com/fxml" alignment="center">
+<VBox fx:controller="main.Lesson_7_8.client.sample.Controller" xmlns:fx="http://javafx.com/fxml" alignment="center">
 
     <stylesheets><URL value="@../css/Style.css"></URL> </stylesheets>
 

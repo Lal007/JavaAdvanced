@@ -1,4 +1,4 @@
-package main.Lesson_7.client.sample;
+package main.Lesson_7_8.client.sample;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -6,7 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class Main extends Application {
+public class ClientMain extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {

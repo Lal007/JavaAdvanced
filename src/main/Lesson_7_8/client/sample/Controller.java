@@ -1,4 +1,4 @@
-package main.Lesson_7.client.sample;
+package main.Lesson_7_8.client.sample;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

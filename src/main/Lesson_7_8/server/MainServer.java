@@ -1,4 +1,4 @@
-package main.Lesson_7.server;
+package main.Lesson_7_8.server;
 
 
 import java.io.IOException;
