@@ -27,7 +27,7 @@
         </ScrollPane>
 
 
-        <HBox fx:id="bottomPanel" managed="false" visible="false">
+        <HBox fx:id="bottomPanel" alignment="BASELINE_CENTER" managed="false" visible="false">
             <TextField fx:id="textField" onAction="#sendMsg" HBox.hgrow="ALWAYS" promptText="Введите сообщение"/>
             <Button fx:id="btn1" text="Send" onAction="#sendMsg"/>
         </HBox>
