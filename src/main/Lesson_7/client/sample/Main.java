@@ -1,4 +1,4 @@
-package main.Lesson_6.client.sample;
+package main.Lesson_7.client.sample;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

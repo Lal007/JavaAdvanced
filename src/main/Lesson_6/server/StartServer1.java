@@ -1,7 +1,7 @@
 package main.Lesson_6.server;
 
-public class StartServer {
+public class StartServer1 {
     public static void main(String[] args) {
-        new Main();
+        new MainServ();
     }
 }

@@ -3,13 +3,12 @@ package main.Lesson_6.server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Iterator;
 import java.util.Vector;
 
-public class Main {
-    private Vector<ClientHandler> clients;
+public class MainServ {
+    private Vector<ClientHandler1> clients;
 
-    public Main() {
+    public MainServ() {
         clients = new Vector<>();
         ServerSocket server = null;
         Socket socket = null;
@@ -21,7 +20,7 @@ public class Main {
             while (true){
                 socket = server.accept();
                 System.out.println("Клиент подключен");
-                new ClientHandler(socket, this);
+                new ClientHandler1(socket, this);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -40,23 +39,23 @@ public class Main {
 
     }
 
-    public void subscribe(ClientHandler client){
+    public void subscribe(ClientHandler1 client){
         clients.add(client);
     }
 
-    public void unsubscribe(ClientHandler client){
+    public void unsubscribe(ClientHandler1 client){
         clients.remove(client);
     }
 
     public void broadCastMsg(String msg){
-        for (ClientHandler client:clients) {
+        for (ClientHandler1 client:clients) {
             client.sendMsg(msg);
         }
 
-        /*Iterator<ClientHandler> i = clients.iterator();
+        /*Iterator<ClientHandler1> i = clients.iterator();
 
         while (i.hasNext()) {
-            ClientHandler client = i.next();
+            ClientHandler1 client = i.next();
             if (!(client.isClientClosed())) {
                 client.sendMsg(msg);
             } else {
