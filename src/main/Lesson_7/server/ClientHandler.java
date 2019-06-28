@@ -1,4 +1,4 @@
-package main.Lesson_6.server;
+package main.Lesson_7.server;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -10,9 +10,10 @@ public class ClientHandler {
     private Socket socket;
     private DataInputStream in;
     private DataOutputStream out;
-    private Main server;
+    private MainServer server;
+    private String nick;
 
-    public ClientHandler(Socket socket, Main server) {
+    public ClientHandler(Socket socket, MainServer server) {
         try {
             this.socket = socket;
             this.server = server;
@@ -23,13 +24,39 @@ public class ClientHandler {
                 @Override
                 public void run() {
                     try {
-                        server.subscribe(ClientHandler.this);
+                        while (true){
+                            String str = in.readUTF();
+                            if (str.startsWith("/auth ")){
+                                String[] tokens = str.split(" ");
+                                String newNick = AuthService.getNickByLoginAndPass(tokens[1], tokens[2]);
+                                System.out.println(newNick);
+                                if (newNick != null){
+                                    if (!server.isNickExist(newNick)){
+                                        sendMsg("/authok");
+                                        nick = newNick;
+                                        server.subscribe(ClientHandler.this);
+                                        break;
+                                    }else {
+                                        sendMsg("Этот пользователь уже авторизован!");
+                                    }
+                                }else {
+                                    sendMsg("Неверный логин/пароль!");
+                                }
+                            }
+                        }
                         while (true) {
                             String str = in.readUTF();
                             if (str.equals("/end")) {
+                                out.writeUTF("/serverClosed");
                                 break;
                             }
-                            server.broadCastMsg(str);
+                            else if (str.startsWith("/w")){
+                                String[] tokens = str.split(" ", 3);
+                                if (tokens.length != 3) continue;
+                                server.broadCastMsg(tokens[2], tokens[1], nick);
+                            }else {
+                                server.broadCastMsg(nick + ": " + str);
+                            }
                         }
                     } catch (IOException e) {
                         try {
@@ -68,8 +95,8 @@ public class ClientHandler {
         }
     }
 
-    public boolean isClientClosed(){
-        return socket.isClosed();
+    public String getNick(){
+        return nick;
     }
 
 }

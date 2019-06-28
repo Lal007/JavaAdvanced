@@ -1,6 +1,5 @@
-package main.Lesson_6.client.sample;
+package main.Lesson_6.client.sample2;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
@@ -14,7 +13,7 @@ import java.net.Socket;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class Controller implements Initializable {
+public class Controller2 implements Initializable {
     @FXML
     TextArea textArea;
 

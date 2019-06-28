@@ -7,13 +7,20 @@
 <?scenbulder-stylsheet /css/Style.css?>
 
 <?import java.net.URL?>
-<VBox fx:controller="main.Lesson_6.client.sample.Controller" xmlns:fx="http://javafx.com/fxml" alignment="center">
+<?import javafx.scene.control.PasswordField?>
+<VBox fx:controller="main.Lesson_7.client.sample.Controller" xmlns:fx="http://javafx.com/fxml" alignment="center">
 
     <stylesheets><URL value="@../css/Style.css"></URL> </stylesheets>
 
+    <HBox fx:id="upperPanel">
+        <TextField HBox.hgrow="ALWAYS" promptText="Логин" fx:id="loginField"></TextField>
+        <PasswordField HBox.hgrow="ALWAYS" promptText="Пароль" fx:id="passwordField" onAction="#tryToAuth"/>
+        <Button text="Авторизация" onAction="#tryToAuth"/>
+    </HBox>
     <TextArea fx:id="textArea" editable="false" VBox.vgrow="ALWAYS"> </TextArea>
-        <HBox>
+
+        <HBox fx:id="bottomPanel" managed="false" visible="false">
             <TextField fx:id="textField" onAction="#sendMsg" HBox.hgrow="ALWAYS" promptText="Введите сообщение"/>
             <Button fx:id="btn1" text="Send" onAction="#sendMsg"/>
         </HBox>
-        </VBox>
+</VBox>
