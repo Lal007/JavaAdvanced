@@ -25,7 +25,7 @@ public class ClientMain extends Application {
         Parent root = loader.load();
         Controller controller = loader.getController();
         primaryStage.setTitle("Chat");
-        primaryStage.setScene(new Scene(root, 300, 275));
+        primaryStage.setScene(new Scene(root, 350, 275));
         primaryStage.setOnHidden(e-> controller.exitApplication());
         primaryStage.show();
         controller.authorization.setOnAction(new EventHandler<ActionEvent>() {
@@ -159,6 +159,7 @@ public class ClientMain extends Application {
                 });
             }
         });
+        controller.clientList.setPrefWidth(75);
     }
 
 

@@ -7,26 +7,30 @@
 
 <?import java.net.URL?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.ListView?>
 <VBox fx:controller="main.Lesson_7_8.client.sample.Controller" xmlns:fx="http://javafx.com/fxml" alignment="center">
 
     <stylesheets><URL value="@../css/Style.css"></URL> </stylesheets>
 
     <HBox fx:id="upperPanel" alignment="BASELINE_CENTER">
-        <!--<TextField HBox.hgrow="ALWAYS" promptText="Логин" fx:id="loginField"></TextField> -->
-        <!--<PasswordField HBox.hgrow="ALWAYS" promptText="Пароль" fx:id="passwordField" onAction="#tryToAuth"/> -->
         <Button fx:id="authorization" text="Авторизация"/>
         <Button fx:id="registration" text="Регистрация" />
     </HBox>
 
-    <!--<TextArea fx:id="textArea" editable="false" VBox.vgrow="ALWAYS"> </TextArea> -->
-        <ScrollPane fx:id="scrollChat" VBox.vgrow="ALWAYS">
-            <VBox fx:id="VBoxChat" VBox.vgrow="ALWAYS">
-            </VBox>
-        </ScrollPane>
+    <HBox VBox.vgrow="ALWAYS">
+        <ListView fx:id="clientList" managed="false" visible="false" onMouseClicked="#listViewMenu"></ListView>
+        <VBox HBox.hgrow="ALWAYS">
+            <ScrollPane fx:id="scrollChat" VBox.vgrow="ALWAYS">
+                <VBox fx:id="VBoxChat" VBox.vgrow="ALWAYS">
+                </VBox>
+            </ScrollPane>
 
 
-        <HBox fx:id="bottomPanel" alignment="BASELINE_CENTER" managed="false" visible="false">
-            <TextField fx:id="textField" onAction="#sendMsg" HBox.hgrow="ALWAYS" promptText="Введите сообщение"/>
-            <Button fx:id="btn1" text="Send" onAction="#sendMsg"/>
-        </HBox>
+            <HBox fx:id="bottomPanel" alignment="BASELINE_CENTER" managed="false" visible="false">
+                <TextField fx:id="textField" onAction="#sendMsg" HBox.hgrow="ALWAYS" promptText="Введите сообщение"/>
+                <Button fx:id="btn1" text="Send" onAction="#sendMsg"/>
+            </HBox>
+        </VBox>
+    </HBox>
+
 </VBox>

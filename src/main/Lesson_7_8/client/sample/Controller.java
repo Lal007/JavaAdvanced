@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -39,6 +40,9 @@ public class Controller{
     @FXML
     ScrollPane scrollChat;
 
+    @FXML
+    ListView clientList;
+
     public boolean isAuthorized() {
         return isAuthorized;
     }
@@ -57,11 +61,15 @@ public class Controller{
             upperPanel.setManaged(true);
             bottomPanel.setVisible(false);
             bottomPanel.setManaged(false);
+            clientList.setVisible(false);
+            clientList.setManaged(false);
         }else {
             upperPanel.setVisible(false);
             upperPanel.setManaged(false);
             bottomPanel.setVisible(true);
             bottomPanel.setManaged(true);
+            clientList.setVisible(true);
+            clientList.setManaged(true);
         }
     }
 
@@ -89,13 +97,26 @@ public class Controller{
                             }
                         }
                         //textArea.clear();
+                        clearChat();
                         while (true) {
                             String str = in.readUTF();
                             if (str.equals("/serverClosed")){
                                 break;
                             }
-                            //textArea.appendText(str + "\n");
-                            receiveMsg(str);
+                            if (str.startsWith("/clientList")){
+                                String[] tokens = str.split(" ");
+                                Platform.runLater(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        clientList.getItems().clear();
+                                        for (int i = 1; i < tokens.length; i++) {
+                                            clientList.getItems().add(tokens[i]);
+                                        }
+                                    }
+                                });
+                            }else {
+                                receiveMsg(str);
+                            }
                         }
                     } catch (EOFException  | SocketException e) {
                         try {
@@ -149,7 +170,7 @@ public class Controller{
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                //scrollChat.setFitToHeight(true);
+                scrollChat.setFitToHeight(true);
                 scrollChat.setFitToWidth(true);
                 scrollChat.setVvalue(1.0);
 
@@ -167,6 +188,16 @@ public class Controller{
         });
 
 
+    }
+
+    public void clearChat(){
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                VBoxChat.getChildren().clear();
+                textField.requestFocus();
+            }
+        });
     }
 
     @FXML
@@ -216,6 +247,10 @@ public class Controller{
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void listViewMenu(MouseEvent mouseEvent){
+        System.out.println(clientList.getSelectionModel().getSelectedItem());
     }
 
 }

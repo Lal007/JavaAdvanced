@@ -44,10 +44,12 @@ public class MainServer {
 
     public void subscribe(ClientHandler client){
         clients.add(client);
+        broadcastClientList();
     }
 
     public void unsubscribe(ClientHandler client){
         clients.remove(client);
+        broadcastClientList();
     }
 
     public void broadCastMsg(ClientHandler from, String msg){
@@ -73,5 +75,18 @@ public class MainServer {
             if (client.getNick().equals(nick)) return true;
         }
         return false;
+    }
+
+    public void broadcastClientList(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("/clientList");
+        for (ClientHandler client: clients) {
+            sb.append(" " + client.getNick());
+        }
+        String out = sb.toString();
+
+        for (ClientHandler client: clients) {
+            client.sendMsg(out);
+        }
     }
 }
