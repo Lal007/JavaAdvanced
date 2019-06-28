@@ -22,7 +22,6 @@ public class MainServer {
 
             while (true){
                 socket = server.accept();
-                System.out.println("Клиент подключен");
                 new ClientHandler(socket, this);
             }
         } catch (IOException e) {

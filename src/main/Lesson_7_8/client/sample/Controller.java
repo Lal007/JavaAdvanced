@@ -1,11 +1,11 @@
 package main.Lesson_7_8.client.sample;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -22,7 +22,8 @@ public class Controller{
     TextField textField;
 
     @FXML
-    Button btn1;
+    Button btn1, authorization, registration;
+
 
     Socket socket;
     DataInputStream in;
@@ -35,12 +36,17 @@ public class Controller{
     HBox upperPanel;
 
     @FXML
-    TextField loginField;
+    VBox VBoxChat;
 
     @FXML
-    PasswordField passwordField;
+    ScrollPane scrollChat;
+
+    public boolean isAuthorized() {
+        return isAuthorized;
+    }
 
     private boolean isAuthorized = false;
+    private String nick = "default";
 
     final String IP_ADRESS = "localhost";
     final int PORT = 8189;
@@ -52,7 +58,7 @@ public class Controller{
             upperPanel.setVisible(true);
             upperPanel.setManaged(true);
             bottomPanel.setVisible(false);
-            bottomPanel.setVisible(false);
+            bottomPanel.setManaged(false);
         }else {
             upperPanel.setVisible(false);
             upperPanel.setManaged(false);
@@ -75,19 +81,23 @@ public class Controller{
                         while (true){
                             String str = in.readUTF();
                             if (str.startsWith("/authok")){
+                                nick = str.split(" ", 2)[1];
                                 setAuthorized(true);
+                                System.out.println("authorization ok");
                                 break;
                             }else{
-                                textArea.appendText(str + "\n");
+                                //textArea.appendText(str + "\n");
+                                receiveMsg("Server: " + str);
                             }
                         }
-                        textArea.clear();
+                        //textArea.clear();
                         while (true) {
                             String str = in.readUTF();
                             if (str.equals("/serverClosed")){
                                 break;
                             }
-                            textArea.appendText(str + "\n");
+                            //textArea.appendText(str + "\n");
+                            receiveMsg(str);
                         }
                     } catch (EOFException  | SocketException e) {
                         try {
@@ -136,11 +146,38 @@ public class Controller{
 
     }
 
+    public void receiveMsg(String msg){
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                //scrollChat.setFitToHeight(true);
+                scrollChat.setFitToWidth(true);
+                scrollChat.setVvalue(1.0);
+
+                Label label = new Label(msg + "  \n");
+                VBox vbox = new VBox();
+
+                if (msg.startsWith(nick)){
+                    vbox.setAlignment(Pos.TOP_RIGHT);
+                }else{
+                    vbox.setAlignment(Pos.TOP_LEFT);
+                }
+                vbox.getChildren().add(label);
+                VBoxChat.getChildren().add(vbox);
+            }
+        });
+
+
+    }
+
     @FXML
     public void exitApplication() {
         System.out.println("Exit!!!");
         try {
-            out.writeUTF("/end");
+            if (out != null) {
+                out.writeUTF("/end");
+            }
         } catch (IOException | NullPointerException e) {
             System.out.println("Нет связи с сервером.");
             try {
@@ -154,14 +191,12 @@ public class Controller{
         }
     }
 
-    public void tryToAuth(){
+    public void tryToAuth(String login, String pass){
         if (socket == null || socket.isClosed()){
             connect();
         }
         try {
-            out.writeUTF("/auth " + loginField.getText() + " " + passwordField.getText());
-            loginField.clear();
-            passwordField.clear();
+            out.writeUTF("/auth " + login + " " + pass);
         }catch (IOException | NullPointerException e) {
             System.out.println("Сервер недоступен");
             try {

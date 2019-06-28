@@ -32,7 +32,7 @@ public class ClientHandler {
                                 System.out.println(newNick);
                                 if (newNick != null){
                                     if (!server.isNickExist(newNick)){
-                                        sendMsg("/authok");
+                                        sendMsg("/authok " + newNick);
                                         nick = newNick;
                                         server.subscribe(ClientHandler.this);
                                         break;
@@ -69,7 +69,6 @@ public class ClientHandler {
                         try {
                             socket.close();
                             server.unsubscribe(ClientHandler.this);
-                            System.out.println("Отключение клиента");
                         } catch (IOException ex) {
                             ex.printStackTrace();
                         }
