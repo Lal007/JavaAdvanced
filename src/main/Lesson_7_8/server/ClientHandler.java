@@ -26,6 +26,8 @@ public class ClientHandler {
                     try {
                         while (true){
                             String str = in.readUTF();
+
+                            //Авторизация
                             if (str.startsWith("/auth ")){
                                 String[] tokens = str.split(" ");
                                 String newNick = AuthService.getNickByLoginAndPass(tokens[1], tokens[2]);
@@ -42,6 +44,14 @@ public class ClientHandler {
                                 }else {
                                     sendMsg("Неверный логин/пароль!");
                                 }
+                            }
+
+                            //Регистрация
+                            if (str.startsWith("/register ")){
+                                String[] tokens = str.split(" ", 4);
+                                if (AuthService.registerNewUser(tokens[1], tokens[2], tokens[3])){
+                                    sendMsg("Регистрация успешна");
+                                }else sendMsg("Ошибка регистрации");
                             }
                         }
                         while (true) {

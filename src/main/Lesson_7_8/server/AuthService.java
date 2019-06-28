@@ -39,4 +39,15 @@ public class AuthService {
             e.printStackTrace();
         }
     }
+
+    public static boolean registerNewUser(String nick, String login, String pass){
+        String sql = String.format("INSERT INTO main (login, password, nickname) VALUES ('%s', '%s', '%s')", login, pass, nick);
+
+        try {
+            stmt.executeUpdate(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return getNickByLoginAndPass(login, pass) != null;
+    }
 }

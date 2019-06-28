@@ -15,8 +15,6 @@ import java.net.Socket;
 import java.net.SocketException;
 
 public class Controller{
-    @FXML
-    TextArea textArea;
 
     @FXML
     TextField textField;
@@ -206,6 +204,17 @@ public class Controller{
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
+        }
+    }
+
+    public void regNewUser(String nick, String login, String pass){
+        if (socket == null || socket.isClosed()){
+            connect();
+        }
+        try {
+            out.writeUTF("/register " + nick + " " + login + " " + pass);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

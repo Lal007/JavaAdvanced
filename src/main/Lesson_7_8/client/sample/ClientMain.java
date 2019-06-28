@@ -99,6 +99,66 @@ public class ClientMain extends Application {
                 });
             }
         });
+        controller.registration.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                Label secondLabel = new Label();
+                VBox buttonBox = new VBox();
+                VBox mainBox = new VBox();
+
+                TextField nick = new TextField();
+                nick.setPromptText("Ник");
+
+                TextField login = new TextField();
+                login.setPromptText("Логин");
+
+                PasswordField pass = new PasswordField();
+                pass.setPromptText("Пароль");
+
+                Button regButton = new Button("Sign in");
+                mainBox.setAlignment(Pos.TOP_CENTER);
+                mainBox.getChildren().add(nick);
+                mainBox.getChildren().add(login);
+                mainBox.getChildren().add(pass);
+
+                buttonBox.setAlignment(Pos.BASELINE_CENTER);
+                buttonBox.getChildren().add(regButton);
+
+                mainBox.getChildren().add(buttonBox);
+                secondLabel.setGraphic(mainBox);
+
+                StackPane secondaryLayout = new StackPane();
+                secondaryLayout.getChildren().add(secondLabel);
+
+                Scene secondScene = new Scene(secondaryLayout, 230, 200);
+
+                // New window (Stage)
+                Stage newWindow = new Stage();
+                newWindow.setTitle("Second Stage");
+                newWindow.setScene(secondScene);
+
+                // Set position of second window, related to primary window.
+                newWindow.setX(primaryStage.getX() + 200);
+                newWindow.setY(primaryStage.getY() + 100);
+                newWindow.show();
+
+                regButton.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent actionEvent) {
+                        controller.regNewUser(nick.getText(), login.getText(), pass.getText());
+                        newWindow.close();
+                    }
+                });
+
+                pass.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent actionEvent) {
+                        controller.regNewUser(nick.getText(), login.getText(), pass.getText());
+                        newWindow.close();
+                    }
+                });
+            }
+        });
     }
 
 
