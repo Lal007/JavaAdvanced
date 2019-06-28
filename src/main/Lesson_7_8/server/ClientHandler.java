@@ -4,6 +4,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class ClientHandler {
 
@@ -53,19 +54,32 @@ public class ClientHandler {
                                     sendMsg("Регистрация успешна");
                                 }else sendMsg("Ошибка регистрации");
                             }
+
                         }
                         while (true) {
                             String str = in.readUTF();
-                            if (str.equals("/end")) {
-                                out.writeUTF("/serverClosed");
-                                break;
-                            }
-                            else if (str.startsWith("/w")){
-                                String[] tokens = str.split(" ", 3);
-                                if (tokens.length != 3) continue;
-                                server.broadCastMsg(tokens[2], tokens[1], nick);
+                            if (str.startsWith("/")){
+                                if (str.equals("/end")) {
+                                    out.writeUTF("/serverClosed");
+                                    break;
+                                }
+                                else if (str.startsWith("/w")){
+                                    String[] tokens = str.split(" ", 3);
+                                    if (tokens.length != 3) continue;
+                                    server.broadCastMsg(tokens[2], tokens[1], nick);
+                                }
+                                else if (str.startsWith("/blackList ")){                    //Добавление в черный список
+                                    String banNick = str.split(" ")[1];
+                                    int id = AuthService.getIdByNick(nick);
+                                    if (!(banNick == null) && AuthService.getIdByNick(banNick) != -1){
+                                        AuthService.addUserToBlacklist(id, banNick);
+                                        sendMsg("Ник " + banNick + " успешно добавлен в черный список");
+                                    }else {
+                                        sendMsg("Ник не найден");
+                                    }
+                                }
                             }else {
-                                server.broadCastMsg(nick + ": " + str);
+                                server.broadCastMsg(ClientHandler.this, nick + ": " + str);
                             }
                         }
                     } catch (IOException e) {
@@ -106,6 +120,16 @@ public class ClientHandler {
 
     public String getNick(){
         return nick;
+    }
+    public boolean blockedNextUser(String senderNick){
+        int id = AuthService.getIdByNick(this.nick);
+        ArrayList<String> bannedUsers = AuthService.getBannedUsers(id);
+        System.out.println("Array!!! " + bannedUsers);
+        if (bannedUsers != null){
+            return bannedUsers.contains(senderNick);
+        }else {
+            return false;
+        }
     }
 
 }

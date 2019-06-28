@@ -1,6 +1,7 @@
 package main.Lesson_7_8.server;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class AuthService {
     private static Connection connection;
@@ -32,6 +33,20 @@ public class AuthService {
         return null;
     }
 
+    public static int getIdByNick(String nick){
+        String sql = String.format("SELECT id FROM main WHERE nickname = '%s'", nick);
+
+        try {
+            ResultSet rs = stmt.executeQuery(sql);
+            if (rs.next()){
+                return Integer.parseInt(rs.getString(1));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
     public static void disconnect(){
         try {
             connection.close();
@@ -49,5 +64,34 @@ public class AuthService {
             e.printStackTrace();
         }
         return getNickByLoginAndPass(login, pass) != null;
+    }
+
+    public static void addUserToBlacklist(int id, String nick){
+        String sql = String.format("INSERT INTO black_list (id_user, banned_users) VALUES ('%d', '%s')", id, nick);
+
+        try {
+            stmt.executeUpdate(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static ArrayList<String> getBannedUsers(int id){
+        String sql = String.format("SELECT banned_users FROM black_list where id_user = %d", id);
+        ArrayList<String> bannedUsers = new ArrayList<>();
+        try {
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()){
+                bannedUsers.add(rs.getString(1));
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        if (bannedUsers.size() > 0) {
+            return bannedUsers;
+        }else {
+            return null;
+        }
     }
 }

@@ -50,28 +50,17 @@ public class MainServer {
         clients.remove(client);
     }
 
-    public void broadCastMsg(String msg){
+    public void broadCastMsg(ClientHandler from, String msg){
         for (ClientHandler client:clients) {
-            client.sendMsg(msg);
-        }
-
-        /*Iterator<ClientHandler1> i = clients.iterator();
-
-        while (i.hasNext()) {
-            ClientHandler1 client = i.next();
-            if (!(client.isClientClosed())) {
+            if (!client.blockedNextUser(from.getNick())){
                 client.sendMsg(msg);
-            } else {
-                i.remove();
-                System.out.println("Клиент отключился");
-
             }
-        }*/
+        }
     }
 
     public void broadCastMsg(String msg, String nickTo, String nickFrom){
         for (ClientHandler client:clients) {
-            if (client.getNick().equals(nickTo)){
+            if (client.getNick().equals(nickTo) && client.blockedNextUser(nickTo)){
                 client.sendMsg(nickFrom + " - private message: " + msg);
             }else if (client.getNick().equals(nickFrom)){
                 client.sendMsg("private message to " + nickTo + ": " +  msg);
