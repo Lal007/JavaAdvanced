@@ -18,7 +18,7 @@
     </HBox>
 
     <HBox VBox.vgrow="ALWAYS">
-        <ListView fx:id="clientList" managed="false" visible="false" onMouseClicked="#listViewMenu"></ListView>
+        <ListView fx:id="clientList" managed="false" visible="false"  ></ListView>   <!--onMouseClicked="#listViewMenu"-->
         <VBox HBox.hgrow="ALWAYS">
             <ScrollPane fx:id="scrollChat" VBox.vgrow="ALWAYS">
                 <VBox fx:id="VBoxChat" VBox.vgrow="ALWAYS">

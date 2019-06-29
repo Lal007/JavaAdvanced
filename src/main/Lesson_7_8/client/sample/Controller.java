@@ -48,6 +48,7 @@ public class Controller{
     }
 
     private boolean isAuthorized = false;
+
     private String nick = "default";
 
     final String IP_ADRESS = "localhost";
@@ -110,7 +111,12 @@ public class Controller{
                                     public void run() {
                                         clientList.getItems().clear();
                                         for (int i = 1; i < tokens.length; i++) {
-                                            clientList.getItems().add(tokens[i]);
+                                            if (tokens[i].equals(nick)){
+                                                clientList.getItems().add(tokens[i] + " - Вы");
+                                            }else {
+                                                clientList.getItems().add(tokens[i]);
+                                            }
+
                                         }
                                     }
                                 });
@@ -249,8 +255,11 @@ public class Controller{
         }
     }
 
-    public void listViewMenu(MouseEvent mouseEvent){
-        System.out.println(clientList.getSelectionModel().getSelectedItem());
+    //public void listViewMenu(MouseEvent mouseEvent){
+    //    System.out.println(clientList.getSelectionModel().getSelectedItem());
+   // }
+    public String getNick() {
+        return nick;
     }
 
 }

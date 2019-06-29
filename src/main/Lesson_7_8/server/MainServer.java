@@ -62,9 +62,10 @@ public class MainServer {
 
     public void broadCastMsg(String msg, String nickTo, String nickFrom){
         for (ClientHandler client:clients) {
-            if (client.getNick().equals(nickTo) && client.blockedNextUser(nickTo)){
+            if (client.getNick().equals(nickTo) && !client.blockedNextUser(nickFrom)) {
                 client.sendMsg(nickFrom + " - private message: " + msg);
-            }else if (client.getNick().equals(nickFrom)){
+            }
+            if (client.getNick().equals(nickFrom)){
                 client.sendMsg("private message to " + nickTo + ": " +  msg);
             }
         }

@@ -7,15 +7,15 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
-import javafx.scene.input.InputMethodEvent;
+import javafx.scene.control.*;
+import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class ClientMain extends Application {
 
@@ -57,12 +57,12 @@ public class ClientMain extends Application {
 
                 // New window (Stage)
                 Stage newWindow = new Stage();
-                newWindow.setTitle("Second Stage");
+                newWindow.setTitle("Авторизация");
                 newWindow.setScene(secondScene);
 
                 // Set position of second window, related to primary window.
-                newWindow.setX(primaryStage.getX() + 200);
-                newWindow.setY(primaryStage.getY() + 100);
+                newWindow.setX(primaryStage.getX() + 50);
+                newWindow.setY(primaryStage.getY() + 50);
 
                 newWindow.show();
                 signIn.setOnAction(new EventHandler<ActionEvent>() {
@@ -134,12 +134,12 @@ public class ClientMain extends Application {
 
                 // New window (Stage)
                 Stage newWindow = new Stage();
-                newWindow.setTitle("Second Stage");
+                newWindow.setTitle("Регистрация");
                 newWindow.setScene(secondScene);
 
                 // Set position of second window, related to primary window.
-                newWindow.setX(primaryStage.getX() + 200);
-                newWindow.setY(primaryStage.getY() + 100);
+                newWindow.setX(primaryStage.getX() + 50);
+                newWindow.setY(primaryStage.getY() + 50);
                 newWindow.show();
 
                 regButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -160,6 +160,150 @@ public class ClientMain extends Application {
             }
         });
         controller.clientList.setPrefWidth(75);
+
+        ContextMenu contextMenu = new ContextMenu();
+
+        MenuItem privateMsg = new MenuItem("Личные сообщения");
+        privateMsg.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+                Label persLabel = new Label();
+                VBox box = new VBox();
+
+                TextField pm = new TextField();
+                pm.setPromptText("Введите личное сообщение");
+                Button sendB = new Button("Отправить");
+
+                box.setAlignment(Pos.TOP_CENTER);
+                box.getChildren().addAll(pm, sendB);
+
+                persLabel.setGraphic(box);
+
+                StackPane secondLayout = new StackPane();
+                secondLayout.getChildren().add(persLabel);
+
+                Scene secondScene = new Scene(secondLayout, 230, 100);
+
+                Stage newWindow = new Stage();
+                newWindow.setTitle("Личные сообщения");
+                newWindow.setScene(secondScene);
+
+                newWindow.setX(primaryStage.getX() + 200);
+                newWindow.setY(primaryStage.getY() + 100);
+
+                newWindow.show();
+
+                sendB.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        String nickFrom = controller.getNick();
+                        String nickTo = (String) controller.clientList.getSelectionModel().getSelectedItem();
+
+                        if (!nickTo.contains("- Вы")){
+                            try {
+                                controller.out.writeUTF("/w " + nickTo + " " + pm.getText());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            newWindow.close();
+                        }else {
+                            controller.receiveMsg("Вы пытаетесь написать себе!");
+                            newWindow.close();
+                        }
+                    }
+                });
+
+                pm.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        String nickFrom = controller.getNick();
+                        String nickTo = (String) controller.clientList.getSelectionModel().getSelectedItem();
+
+                        if (!nickTo.contains("- Вы")){
+                            try {
+                                controller.out.writeUTF("/w " + nickTo + " " + pm.getText());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            newWindow.close();
+                        }else {
+                            controller.receiveMsg("Вы пытаетесь написать себе!");
+                            newWindow.close();
+                        }
+                    }
+                });
+            }
+        });
+
+        MenuItem toBlackList = new MenuItem("Черный список");
+        toBlackList.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Label blackLabel = new Label();
+                VBox vbox = new VBox();
+                HBox box = new HBox();
+                String nickTo = (String) controller.clientList.getSelectionModel().getSelectedItem();
+                TextField tf = new TextField("Вы уверены, что хотите добавить " + nickTo + " в черный список?");
+                Text text = new Text();
+                text.textProperty().bind(tf.textProperty());
+                Button apply = new Button("Подтвердить");
+                Button cancel = new Button("Отменить");
+
+                box.setAlignment(Pos.BOTTOM_CENTER);
+                vbox.setAlignment(Pos.TOP_CENTER);
+                box.getChildren().addAll(apply, cancel);
+                vbox.getChildren().add(text);
+                vbox.getChildren().add(box);
+                blackLabel.setGraphic(vbox);
+
+                StackPane secondLayout = new StackPane();
+                secondLayout.getChildren().add(blackLabel);
+
+                Scene secondScene = new Scene(secondLayout, 370, 100);
+
+                Stage newWindow = new Stage();
+                newWindow.setTitle("Личные сообщения");
+                newWindow.setScene(secondScene);
+
+                newWindow.setX(primaryStage.getX() + 50);
+                newWindow.setY(primaryStage.getY() + 50);
+
+                newWindow.show();
+
+                apply.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        try {
+                            controller.out.writeUTF("/blackList " + nickTo);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        newWindow.close();
+                    }
+                });
+                cancel.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        newWindow.close();
+                    }
+                });
+            }
+        });
+
+        contextMenu.getItems().addAll(privateMsg, toBlackList);
+
+        controller.clientList.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
+            @Override
+            public void handle(ContextMenuEvent event) {
+                //System.out.println(controller.clientList.getSelectionModel().getSelectedItem());
+                contextMenu.show(controller.clientList, event.getScreenX(), event.getScreenY());
+
+
+
+
+            }
+        });
     }
 
 

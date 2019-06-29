@@ -124,7 +124,6 @@ public class ClientHandler {
     public boolean blockedNextUser(String senderNick){
         int id = AuthService.getIdByNick(this.nick);
         ArrayList<String> bannedUsers = AuthService.getBannedUsers(id);
-        System.out.println("Array!!! " + bannedUsers);
         if (bannedUsers != null){
             return bannedUsers.contains(senderNick);
         }else {
