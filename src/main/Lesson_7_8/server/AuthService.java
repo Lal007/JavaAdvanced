@@ -28,7 +28,16 @@ public class AuthService {
                 return rs.getString(1);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+            try {
+                connect();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
         }
         return null;
     }

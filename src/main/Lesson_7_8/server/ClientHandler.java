@@ -31,10 +31,15 @@ public class ClientHandler {
                             //Авторизация
                             if (str.startsWith("/auth ")){
                                 String[] tokens = str.split(" ");
+                                for (String s:tokens) {
+                                    System.out.print(s + " ");
+                                }
+                                System.out.println();
                                 String newNick = AuthService.getNickByLoginAndPass(tokens[1], tokens[2]);
                                 System.out.println(newNick);
                                 if (newNick != null){
                                     if (!server.isNickExist(newNick)){
+                                        System.out.println("/authok " + newNick);
                                         sendMsg("/authok " + newNick);
                                         nick = newNick;
                                         server.subscribe(ClientHandler.this);
@@ -109,7 +114,6 @@ public class ClientHandler {
         try {
             out.writeUTF(msg);
         } catch (IOException e) {
-            e.printStackTrace();
             try {
                 socket.close();
             } catch (IOException ex) {

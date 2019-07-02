@@ -53,6 +53,8 @@ public class Controller{
 
     final String IP_ADRESS = "localhost";
     final int PORT = 8189;
+    String log = null;
+    String passw = null;
 
     public void setAuthorized(boolean isAuthorized){
         this.isAuthorized = isAuthorized;
@@ -77,26 +79,13 @@ public class Controller{
 
     public void connect() {
         try {
-            socket = new Socket(IP_ADRESS, PORT);
-            in = new DataInputStream(socket.getInputStream());
-            out = new DataOutputStream(socket.getOutputStream());
+            initial();
 
             new Thread(new Runnable() {
                 @Override
                 public void run() {
                     try {
-                        while (true){
-                            String str = in.readUTF();
-                            if (str.startsWith("/authok")){
-                                nick = str.split(" ", 2)[1];
-                                setAuthorized(true);
-                                System.out.println("authorization ok");
-                                break;
-                            }else{
-                                //textArea.appendText(str + "\n");
-                                receiveMsg("Server: " + str);
-                            }
-                        }
+                        auth();
                         //textArea.clear();
                         clearChat();
                         while (true) {
@@ -129,14 +118,21 @@ public class Controller{
                             in.close();
                             out.close();
                             socket.close();
+                            setAuthorized(false);
+                            initial();
+                            auth();
                         } catch (IOException ex) {
                             ex.printStackTrace();
                         }
+
                     } catch (IOException e) {
                         try {
                             in.close();
                             out.close();
                             socket.close();
+                            setAuthorized(false);
+                            initial();
+                            auth();
                         } catch (IOException ex) {
                             ex.printStackTrace();
                         }
@@ -155,8 +151,25 @@ public class Controller{
                 }
             }).start();
         } catch (IOException e) {
-            e.printStackTrace();
+            try {
+                in.close();
+                out.close();
+                socket.close();
+                setAuthorized(false);
+                initial();
+                auth();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+
+            //e.printStackTrace();
         }
+    }
+
+    private void initial() throws IOException {
+        socket = new Socket(IP_ADRESS, PORT);
+        in = new DataInputStream(socket.getInputStream());
+        out = new DataOutputStream(socket.getOutputStream());
     }
 
 
@@ -166,7 +179,13 @@ public class Controller{
             textField.clear();
             textField.requestFocus();
         } catch (IOException e) {
-            e.printStackTrace();
+            try {
+                socket.close();
+                setAuthorized(false);
+                auth();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         }
 
     }
@@ -195,6 +214,32 @@ public class Controller{
 
 
     }
+
+    private void auth() throws IOException {
+        while (true){
+            String str = in.readUTF();
+            if (str.startsWith("/authok")){
+                nick = str.split(" ", 2)[1];
+                setAuthorized(true);
+                System.out.println("authorization ok");
+                break;
+            }else{
+                //textArea.appendText(str + "\n");
+                receiveMsg("Server: " + str);
+            }
+        }
+    }
+    /*private void reconnect(){
+        setAuthorized(false);
+        try {
+            Thread.sleep(15000);
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
+        }
+        if (log == null && passw == null){
+            System.out.println("Server error");
+        }else tryToAuth(log, passw);
+    }*/
 
     public void clearChat(){
         Platform.runLater(new Runnable() {

@@ -75,6 +75,9 @@ public class ClientMain extends Application {
                             e.printStackTrace();
                         }
                         if (controller.isAuthorized()){
+                            controller.log = login.getText();
+                            controller.passw = pass.getText();
+                            System.out.println("Save! " + controller.log);
                             newWindow.close();
                         }else {
                             login.requestFocus();
@@ -91,6 +94,9 @@ public class ClientMain extends Application {
                             e.printStackTrace();
                         }
                         if (controller.isAuthorized()){
+                            controller.log = login.getText();
+                            controller.passw = pass.getText();
+                            System.out.println("Save! " + controller.log);
                             newWindow.close();
                         }else {
                             login.requestFocus();
