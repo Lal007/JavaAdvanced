@@ -1,4 +1,4 @@
-package main.Lesson_7.server;
+package main.Lesson_7_8.server;
 
 
 import java.io.IOException;
@@ -22,7 +22,6 @@ public class MainServer {
 
             while (true){
                 socket = server.accept();
-                System.out.println("Клиент подключен");
                 new ClientHandler(socket, this);
             }
         } catch (IOException e) {
@@ -45,36 +44,28 @@ public class MainServer {
 
     public void subscribe(ClientHandler client){
         clients.add(client);
+        broadcastClientList();
     }
 
     public void unsubscribe(ClientHandler client){
         clients.remove(client);
+        broadcastClientList();
     }
 
-    public void broadCastMsg(String msg){
+    public void broadCastMsg(ClientHandler from, String msg){
         for (ClientHandler client:clients) {
-            client.sendMsg(msg);
-        }
-
-        /*Iterator<ClientHandler1> i = clients.iterator();
-
-        while (i.hasNext()) {
-            ClientHandler1 client = i.next();
-            if (!(client.isClientClosed())) {
+            if (!client.blockedNextUser(from.getNick())){
                 client.sendMsg(msg);
-            } else {
-                i.remove();
-                System.out.println("Клиент отключился");
-
             }
-        }*/
+        }
     }
 
     public void broadCastMsg(String msg, String nickTo, String nickFrom){
         for (ClientHandler client:clients) {
-            if (client.getNick().equals(nickTo)){
+            if (client.getNick().equals(nickTo) && !client.blockedNextUser(nickFrom)) {
                 client.sendMsg(nickFrom + " - private message: " + msg);
-            }else if (client.getNick().equals(nickFrom)){
+            }
+            if (client.getNick().equals(nickFrom)){
                 client.sendMsg("private message to " + nickTo + ": " +  msg);
             }
         }
@@ -85,5 +76,18 @@ public class MainServer {
             if (client.getNick().equals(nick)) return true;
         }
         return false;
+    }
+
+    public void broadcastClientList(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("/clientList");
+        for (ClientHandler client: clients) {
+            sb.append(" " + client.getNick());
+        }
+        String out = sb.toString();
+
+        for (ClientHandler client: clients) {
+            client.sendMsg(out);
+        }
     }
 }
